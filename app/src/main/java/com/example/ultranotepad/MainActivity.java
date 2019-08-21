@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_notes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

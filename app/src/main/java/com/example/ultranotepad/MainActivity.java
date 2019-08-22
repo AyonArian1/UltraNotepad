@@ -1,6 +1,5 @@
 package com.example.ultranotepad;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,33 +10,19 @@ import com.example.ultranotepad.Model.Note;
 import com.example.ultranotepad.db.NoteDB;
 import com.example.ultranotepad.db.NotesDao;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.NetworkOnMainThreadException;
-import android.preference.DialogPreference;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static com.example.ultranotepad.EditNoteActivity.NOTE_EXTRA_KEY;
 
@@ -49,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     private NotesDao dao;
     private MainActionCallback actionCallback;
     private int checkCount = 0;
+    private FloatingActionButton fab;
 
 
     @Override
@@ -62,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,10 +119,21 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                 note.setChecked(!note.isChecked());
                 if (note.isChecked()) {
                     checkCount++;
-                }
-                else{
+                } else {
                     checkCount--;
                 }
+
+                if (checkCount > 1) {
+                    actionCallback.changeShareItemVisible(false);
+                } else {
+                    actionCallback.changeShareItemVisible(true);
+                }
+
+                if (checkCount == 0) {
+                    actionCallback.getAction().finish();
+                }
+
+                actionCallback.setCountItem(checkCount + "/" + notes.size());
                 adapter.notifyDataSetChanged();
             }
 
@@ -154,16 +151,22 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                 } else if (menuItem.getItemId() == R.id.action_share) {
                     onShareNotes();
                 }
-                return true;
+                getAction().finish();
+                return false;
             }
         };
-        actionCallback.setCountItem(checkCount + "/" + notes.size());
         startActionMode(actionCallback);
-
+        fab.setVisibility(View.GONE);
+        actionCallback.setCountItem(checkCount + "/" + notes.size());
     }
 
     private void onShareNotes() {
-
+        Note note = adapter.getCheckedNotes().get(0);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String noteTextForShare = note.getNoteText()+ "\nBy: " + getString(R.string.app_name);
+        shareIntent.putExtra(Intent.EXTRA_TEXT,noteTextForShare);
+        startActivity(shareIntent);
     }
 
     private void onDeleteMultiNotes() {
@@ -174,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                 dao.deleteNote(note);
             }
             loadNotes();
+            Toast.makeText(this, checkCount + " notes deleted", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "No notes Selected", Toast.LENGTH_SHORT).show();
         }
@@ -186,5 +190,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
 
         adapter.setMultiCheckMode(false);
         adapter.setListener(this);
+
+        fab.setVisibility(View.VISIBLE);
     }
 }

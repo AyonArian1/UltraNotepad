@@ -13,7 +13,7 @@
     android:layout_margin="4dp"
     android:elevation="4dp"
     android:padding="4dp"
-    app:cardBackgroundColor="#e6ee9c"
+    app:cardBackgroundColor="#f0f4c3"
     app:cardCornerRadius="4dp">
 
     <RelativeLayout
@@ -58,6 +58,7 @@
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="2dp"
                     android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:textSize="12sp" />
 
             </LinearLayout>

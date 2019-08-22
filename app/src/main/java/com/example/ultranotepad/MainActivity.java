@@ -131,16 +131,17 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
             @Override
             public void onNoteClick(Note note) {
                 note.setChecked(!note.isChecked());
-                if (note.isChecked())
+                if (note.isChecked()) {
                     checkCount++;
-                else
+                }
+                else{
                     checkCount--;
-
+                }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onNoteLongClick(Note note){
+            public void onNoteLongClick(Note note) {
 
             }
         });
@@ -156,12 +157,13 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                 return true;
             }
         };
-        actionCallback.setCount(checkCount + "/" + notes.size());
+        actionCallback.setCountItem(checkCount + "/" + notes.size());
         startActionMode(actionCallback);
 
     }
 
     private void onShareNotes() {
+
     }
 
     private void onDeleteMultiNotes() {
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         } else {
             Toast.makeText(this, "No notes Selected", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override

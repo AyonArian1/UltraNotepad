@@ -1,5 +1,6 @@
 package com.example.ultranotepad;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,8 +11,12 @@ import com.example.ultranotepad.Model.Note;
 import com.example.ultranotepad.db.NoteDB;
 import com.example.ultranotepad.db.NotesDao;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +24,7 @@ import android.view.ActionMode;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -66,8 +72,24 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         this.adapter = new NoteAdapter(this.notes, this);
         this.adapter.setListener(this);
         this.recyclerView.setAdapter(adapter);
+
+        //swipeToDeleteHelper.attachToRecyclerView(recyclerView);
+
+        showEmptyText();
     }
 
+    private void showEmptyText() {
+        TextView emptyTextview = (TextView) findViewById(R.id.empty_notes_txtView);
+        if (notes.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            emptyTextview.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextview.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //Add a new note by go to EditActivity
     private void onAddNewNote() {
         startActivity(new Intent(MainActivity.this, EditNoteActivity.class));
     }
@@ -94,12 +116,14 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         return super.onOptionsItemSelected(item);
     }
 
+    //Activity Resume
     @Override
     protected void onResume() {
         super.onResume();
         loadNotes();
     }
 
+    //On click to edit the note
     @Override
     public void onNoteClick(Note note) {
         Intent edit = new Intent(MainActivity.this, EditNoteActivity.class);
@@ -107,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         startActivity(edit);
     }
 
+    //On long click to select Multiple notes and delete notes
     @Override
     public void onNoteLongClick(Note note) {
         note.setChecked(true);
@@ -117,18 +142,19 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
             @Override
             public void onNoteClick(Note note) {
                 note.setChecked(!note.isChecked());
+                //to set how much notes are selected
                 if (note.isChecked()) {
                     checkCount++;
                 } else {
                     checkCount--;
                 }
-
+                //For share one note
                 if (checkCount > 1) {
                     actionCallback.changeShareItemVisible(false);
                 } else {
                     actionCallback.changeShareItemVisible(true);
                 }
-
+                //If there are no notes selected action mode is going to finish
                 if (checkCount == 0) {
                     actionCallback.getAction().finish();
                 }
@@ -156,19 +182,21 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
             }
         };
         startActionMode(actionCallback);
-        fab.setVisibility(View.GONE);
+        fab.hide();
         actionCallback.setCountItem(checkCount + "/" + notes.size());
     }
 
+    //share note
     private void onShareNotes() {
         Note note = adapter.getCheckedNotes().get(0);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        String noteTextForShare = note.getNoteText()+ "\nBy: " + getString(R.string.app_name);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,noteTextForShare);
+        String noteTextForShare = note.getNoteText() + "\nBy: " + getString(R.string.app_name);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, noteTextForShare);
         startActivity(shareIntent);
     }
 
+    //Multiple Delete notes
     private void onDeleteMultiNotes() {
         List<Note> checkednote = adapter.getCheckedNotes();
 
@@ -184,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
 
     }
 
+    //All checkbox is unchceked the option menu gone
     @Override
     public void onActionModeFinished(ActionMode mode) {
         super.onActionModeFinished(mode);
@@ -191,6 +220,52 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         adapter.setMultiCheckMode(false);
         adapter.setListener(this);
 
-        fab.setVisibility(View.VISIBLE);
+        fab.show();
     }
+/*
+    //Swipe to delete notes
+    private ItemTouchHelper swipeToDeleteHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return 0;
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return true;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            if (notes != null) {
+                //get position of note
+                Note swipedNote = notes.get(viewHolder.getAdapterPosition());
+                //if any note is swiped
+                if (swipedNote != null) {
+                    swipeToDelete(swipedNote, viewHolder);
+                }
+            }
+        }
+    });
+
+    private void swipeToDelete(final Note swipedNote, final RecyclerView.ViewHolder viewHolder) {
+        new AlertDialog.Builder(this)
+                .setMessage("Want to delete this note?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dao.deleteNote(swipedNote);
+                        notes.remove(swipedNote);
+                        adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
+                    }
+                })
+                .setCancelable(false)
+                .create().show();
+    }*/
 }

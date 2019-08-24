@@ -10,9 +10,10 @@ import com.example.ultranotepad.R;
 public abstract class MainActionCallback implements ActionMode.Callback {
 
     private ActionMode action;
-    private MenuItem countItem;
+    //private MenuItem countItem;
     private MenuItem shareItem;
 
+    //Inflate menu more action mode
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         this.action = actionMode;
@@ -31,15 +32,16 @@ public abstract class MainActionCallback implements ActionMode.Callback {
 
     }
 
-    public void setCountItem(String checkedCount) {
+    /*public void setCountItem(String checkedCount) {
         if (countItem != null)
             this.countItem.setTitle(checkedCount);
-    }
-
+    }*/
+    //One note will be share at one time
     public void changeShareItemVisible(boolean b) {
         shareItem.setVisible(b);
     }
 
+    //getter for actionMode
     public ActionMode getAction() {
         return action;
     }

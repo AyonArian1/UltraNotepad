@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder>{
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
 
     private ArrayList<Note> notes;
     private Context context;
@@ -34,17 +34,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder>{
         this.context = context;
     }
 
+    //Set a layout inflater of notes_item_list_sample.xml
     @NonNull
     @Override
     public NotesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.notes_item_list_sample,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.notes_item_list_sample, parent, false);
         return new NotesHolder(view);
     }
 
+    //Bind everything into view of notes_item_list_sample.xml
     @Override
     public void onBindViewHolder(@NonNull NotesHolder holder, int position) {
         final Note note = getNotes(position);
-        if (note!= null){
+        if (note != null) {
             holder.noteText.setText(note.getNoteText());
             holder.noteDate.setText(dateFromLong(note.getNoteDate()));
 
@@ -65,25 +67,28 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder>{
                 }
             });
 
-            if (multiCheckMode){
+            if (multiCheckMode) {
                 holder.checkBox.setVisibility(View.VISIBLE);
                 holder.checkBox.setChecked(note.isChecked());
-            }else {
+            } else {
                 holder.checkBox.setVisibility(View.GONE);
             }
         }
     }
 
+    //get how much item in recycler view
     @Override
     public int getItemCount() {
         return notes.size();
     }
 
-    private Note getNotes(int position){
+    //get notes position
+    private Note getNotes(int position) {
         return notes.get(position);
     }
 
-    public List<Note> getCheckedNotes(){
+    //Check how much notes are selected by checkbox
+    public List<Note> getCheckedNotes() {
         List<Note> checkNotes = new ArrayList<>();
         for (Note n : this.notes) {
             if (n.isChecked())
@@ -92,7 +97,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder>{
         return checkNotes;
     }
 
-
+    //ViewHolder for recycler view
     public class NotesHolder extends RecyclerView.ViewHolder {
 
         TextView noteText, noteDate;
@@ -107,15 +112,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder>{
         }
 
     }
+
+    //Date format
     public static String dateFromLong(long time) {
         DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy 'at' hh:mm aaa", Locale.ENGLISH);
         return format.format(new Date(time));
     }
 
+    //setter for listener
     public void setListener(NoteEventListener listener) {
         this.listener = listener;
     }
 
+    //setter for multiCheckMode
     public void setMultiCheckMode(boolean multiCheckMode) {
         this.multiCheckMode = multiCheckMode;
         notifyDataSetChanged();

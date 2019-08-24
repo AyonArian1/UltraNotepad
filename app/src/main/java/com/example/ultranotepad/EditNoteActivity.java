@@ -61,11 +61,10 @@ public class EditNoteActivity extends AppCompatActivity {
 
         if (!text.isEmpty()) {
             long date = new Date().getTime();
-            if (temp==null){
-                temp = new Note(text,date);
+            if (temp == null) {
+                temp = new Note(text, date);
                 dao.insertNote(temp);
-            }
-            else {
+            } else {
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
                 dao.updateNote(temp);

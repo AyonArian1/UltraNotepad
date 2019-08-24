@@ -51,10 +51,17 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_notes);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Reversed the recycler view
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        //set LinearLayoutManager to recycler view
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
         fab = findViewById(R.id.fab);
+        //Add new note on clicking floating action button
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
             }
         });
 
+        //Database instance set
         dao = NoteDB.getInstance(this).notesDao();
     }
 

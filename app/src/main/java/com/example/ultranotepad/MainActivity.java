@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         this.recyclerView.setAdapter(adapter);
 
         //swipeToDeleteHelper.attachToRecyclerView(recyclerView);
-
         showEmptyText();
     }
 
@@ -159,7 +158,10 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                     actionCallback.getAction().finish();
                 }
 
-                actionCallback.setCountItem(checkCount + "/" + notes.size());
+                actionCallback.getAction().setTitle(checkCount + " selected");
+
+                //actionCallback.setCountItem(checkCount + "/" + notes.size());
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -183,7 +185,9 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         };
         startActionMode(actionCallback);
         fab.hide();
-        actionCallback.setCountItem(checkCount + "/" + notes.size());
+        actionCallback.getAction().setTitle(checkCount + " selected");
+
+        //actionCallback.setCountItem(checkCount + "/" + notes.size());
     }
 
     //share note
@@ -222,7 +226,9 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
 
         fab.show();
     }
-/*
+
+
+    /*
     //Swipe to delete notes
     private ItemTouchHelper swipeToDeleteHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
         @Override

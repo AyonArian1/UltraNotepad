@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.ActionMode;
 import android.view.View;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     private MainActionCallback actionCallback;
     private int checkCount = 0;
     private FloatingActionButton fab;
+    private static final int NUM_COLOUMN = 2;
 
 
     @Override
@@ -51,13 +53,17 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_notes);
+
+        //Staggered grid view layout
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(NUM_COLOUMN, LinearLayoutManager.VERTICAL);
+
         //Reversed the recycler view
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        /*LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);
+        mLayoutManager.setStackFromEnd(true);*/
 
         //set LinearLayoutManager to recycler view
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
         fab = findViewById(R.id.fab);

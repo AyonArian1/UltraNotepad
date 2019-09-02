@@ -1,6 +1,5 @@
 package com.example.ultranotepad;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.example.ultranotepad.EditNoteActivity.NOTE_EXTRA_KEY;
@@ -55,16 +57,18 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_notes);
 
         //Staggered grid view layout
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(NUM_COLOUMN, LinearLayoutManager.VERTICAL);
-
-        //Reversed the recycler view
-        /*LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);*/
-
-        //set LinearLayoutManager to recycler view
+        /*StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(NUM_COLOUMN, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        recyclerView.setHasFixedSize(true);*/
+
+
+        //Reversed Linear Layout the recycler view
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
+
 
         fab = findViewById(R.id.fab);
         //Add new note on clicking floating action button
@@ -77,16 +81,18 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
 
         //Database instance set
         dao = NoteDB.getInstance(this).notesDao();
+        loadNotes();
     }
 
     private void loadNotes() {
         this.notes = new ArrayList<>();
         List<Note> list = dao.getNotes();
         this.notes.addAll(list);
+
         this.adapter = new NoteAdapter(this.notes, this);
         this.adapter.setListener(this);
+        adapter.notifyDataSetChanged();
         this.recyclerView.setAdapter(adapter);
-
         //swipeToDeleteHelper.attachToRecyclerView(recyclerView);
         showEmptyText();
     }
@@ -105,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     //Add a new note by go to EditActivity
     private void onAddNewNote() {
         startActivity(new Intent(MainActivity.this, EditNoteActivity.class));
+        finish();
     }
 
     @Override
@@ -129,19 +136,18 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
         return super.onOptionsItemSelected(item);
     }
 
-    //Activity Resume
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadNotes();
-    }
-
     //On click to edit the note
     @Override
     public void onNoteClick(Note note) {
         Intent edit = new Intent(MainActivity.this, EditNoteActivity.class);
         edit.putExtra(NOTE_EXTRA_KEY, note.getId());
         startActivity(edit);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     //On long click to select Multiple notes and delete notes
@@ -222,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
             for (Note note : checkednote) {
                 dao.deleteNote(note);
             }
-            loadNotes();
             Toast.makeText(this, checkCount + " notes deleted", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "No notes Selected", Toast.LENGTH_SHORT).show();
@@ -234,11 +239,10 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     @Override
     public void onActionModeFinished(ActionMode mode) {
         super.onActionModeFinished(mode);
-
         adapter.setMultiCheckMode(false);
         adapter.setListener(this);
-
         fab.show();
+        loadNotes();
     }
 
 

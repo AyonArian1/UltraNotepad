@@ -1,6 +1,7 @@
 package com.example.ultranotepad.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ultranotepad.CallBack.NoteEventListener;
@@ -82,12 +84,31 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
         return notes.size();
     }
 
+    //ViewHolder for recycler view
+    public class NotesHolder extends RecyclerView.ViewHolder {
+
+        TextView noteText, noteDate;
+        CheckBox checkBox;
+        CardView cardView;
+
+        public NotesHolder(@NonNull View itemView) {
+            super(itemView);
+
+            cardView = itemView.findViewById(R.id.cardview_id);
+            noteText = (TextView) itemView.findViewById(R.id.note_text);
+            noteDate = (TextView) itemView.findViewById(R.id.note_date);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
+        }
+
+    }
+
     //get notes position
+
     private Note getNotes(int position) {
         return notes.get(position);
     }
-
     //Check how much notes are selected by checkbox
+
     public List<Note> getCheckedNotes() {
         List<Note> checkNotes = new ArrayList<>();
         for (Note n : this.notes) {
@@ -95,22 +116,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
                 checkNotes.add(n);
         }
         return checkNotes;
-    }
-
-    //ViewHolder for recycler view
-    public class NotesHolder extends RecyclerView.ViewHolder {
-
-        TextView noteText, noteDate;
-        CheckBox checkBox;
-
-        public NotesHolder(@NonNull View itemView) {
-            super(itemView);
-
-            noteText = (TextView) itemView.findViewById(R.id.note_text);
-            noteDate = (TextView) itemView.findViewById(R.id.note_date);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
-        }
-
     }
 
     //Date format

@@ -8,26 +8,18 @@
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:elevation="4dp"
-    android:padding="4dp"
-    app:cardBackgroundColor="#f0f4c3"
-    app:cardCornerRadius="4dp">
-
-    <RelativeLayout
+        android:id="@+id/cardview_id"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:elevation="4dp"
+        android:padding="4dp"
+        app:cardBackgroundColor="#f0f4c3"
+        app:cardCornerRadius="4dp">
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                app:buttonTint="#607d8b"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,6 +35,8 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="2dp"
+                    android:maxLines="2"
+                    android:minLines="2"
                     android:padding="4dp"
                     android:textColor="#000"
                     android:textSize="18sp" />
@@ -60,6 +54,15 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                app:buttonTint="#607d8b" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

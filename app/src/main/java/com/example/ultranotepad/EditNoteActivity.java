@@ -3,6 +3,7 @@ package com.example.ultranotepad;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Menu;
@@ -42,6 +43,12 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        startActivity(new Intent(EditNoteActivity.this, MainActivity.class));
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_new_save, menu);
         return super.onCreateOptionsMenu(menu);
@@ -69,7 +76,9 @@ public class EditNoteActivity extends AppCompatActivity {
                 temp.setNoteDate(date);
                 dao.updateNote(temp);
             }
-            finish();
+            onBackPressed();
+        }else{
+           onBackPressed();
         }
     }
 }

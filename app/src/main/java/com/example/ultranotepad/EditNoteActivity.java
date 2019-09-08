@@ -1,10 +1,15 @@
 package com.example.ultranotepad;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,13 +17,19 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ultranotepad.CallBack.NoteEventListener;
 import com.example.ultranotepad.Model.Note;
 import com.example.ultranotepad.db.NoteDB;
 import com.example.ultranotepad.db.NotesDao;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 
 public class EditNoteActivity extends AppCompatActivity {
 
@@ -60,6 +71,16 @@ public class EditNoteActivity extends AppCompatActivity {
         if (id == R.id.edit_note_save) {
             onSaveNote();
         }
+        else if (id == R.id.edit_save_internal){
+            String text = noteEditText.getText().toString().trim();
+
+            if (!text.equals("")){
+                saveAsTextFile(text,text);
+            }
+            else {
+                Toast.makeText(this, "Write something to save", Toast.LENGTH_SHORT).show();
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -77,8 +98,30 @@ public class EditNoteActivity extends AppCompatActivity {
                 dao.updateNote(temp);
             }
             onBackPressed();
-        }else{
-           onBackPressed();
+        } else {
+            onBackPressed();
         }
+    }
+
+    private void saveAsTextFile(String filename, String content) {
+        String fileName = filename + ".txt";
+
+        //create file
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), fileName);
+
+        //write file
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(content.getBytes());
+            fos.close();
+            Toast.makeText(this, "Saved to External Storage", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error saving", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

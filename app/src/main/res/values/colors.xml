@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--Day Mode Theme-->
 <resources>
     <color name="colorPrimary">#ff941a</color>
     <color name="colorPrimaryDark">#f57c00</color>
     <color name="colorAccent">#0047AB</color>
+    <color name="textColor">#000000</color>
+    <color name="cardBackground">#f0f4c3</color>
 </resources>

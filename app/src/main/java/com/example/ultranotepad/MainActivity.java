@@ -2,6 +2,7 @@ package com.example.ultranotepad;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -28,6 +30,7 @@ import android.view.ActionMode;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,13 +52,23 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     private FloatingActionButton fab;
     private static final int NUM_COLOUMN = 2;
 
-
+    SharedPreferences sharedPreferences = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPreferences = getSharedPreferences("night",0);
+        Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
+        if (booleanValue){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_notes);
 
@@ -243,6 +256,21 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
                     finish();
                 }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

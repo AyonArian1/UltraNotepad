@@ -2,10 +2,12 @@ package com.example.ultranotepad;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,11 +39,25 @@ public class EditNoteActivity extends AppCompatActivity {
     private NotesDao dao;
     private Note temp;
     public static final String NOTE_EXTRA_KEY = "note_id";
+    SharedPreferences sharedPreferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPreferences = getSharedPreferences("night",0);
+        Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
+        if (booleanValue){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
+        setTitle("Edit Note");
+
+
 
         noteEditText = (EditText) findViewById(R.id.input_note);
         dao = NoteDB.getInstance(this).notesDao();

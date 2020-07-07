@@ -1,6 +1,5 @@
 package com.example.ultranotepad.CallBack;
 
-import android.os.Build;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;

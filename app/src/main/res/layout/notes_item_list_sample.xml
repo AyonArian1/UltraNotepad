@@ -14,7 +14,7 @@
         android:layout_margin="4dp"
         android:elevation="4dp"
         android:padding="4dp"
-        app:cardBackgroundColor="#f0f4c3"
+        app:cardBackgroundColor="@color/cardBackground"
         app:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -35,10 +35,10 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="2dp"
+                    android:textColor="@color/textColor"
                     android:maxLines="2"
                     android:minLines="2"
                     android:padding="4dp"
-                    android:textColor="#000"
                     android:textSize="18sp" />
 
                 <TextView

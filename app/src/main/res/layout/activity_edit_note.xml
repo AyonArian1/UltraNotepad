@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditNoteActivity">
+    android:layout_margin="8dp"
+    tools:context=".EditNoteActivity"
+    >
 
     <EditText
         android:id="@+id/input_note"
@@ -12,10 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:background="#fff"
         android:ems="10"
-        android:backgroundTint="#f0f4c3"
+        android:background="@color/cardBackground"
+        android:textColor="@color/textColor"
         android:inputType="textMultiLine"
         android:gravity="top"
+        android:padding="4dp"
         />
 </RelativeLayout>

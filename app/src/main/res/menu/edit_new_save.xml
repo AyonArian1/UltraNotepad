@@ -7,10 +7,4 @@
         android:id="@+id/edit_save_internal"
         android:title="Export to file"
         />
-
-    <item
-        android:id="@+id/edit_note_save"
-        android:title="SAVE"
-        android:icon="@drawable/ic_action_save"
-        app:showAsAction="ifRoom" />
 </menu>

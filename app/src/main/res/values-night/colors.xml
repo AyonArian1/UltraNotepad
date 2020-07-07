@@ -2,9 +2,9 @@
 
 <!--Day Mode Theme-->
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimary">#272727</color>
     <color name="colorPrimaryDark">#373737</color>
-    <color name="colorAccent">#3E3939</color>
+    <color name="colorAccent">#244370</color>
     <color name="textColor">#FFFFFF</color>
-    <color name="cardBackground">#2E3020</color>
+    <color name="cardBackground">#373737</color>
 </resources>

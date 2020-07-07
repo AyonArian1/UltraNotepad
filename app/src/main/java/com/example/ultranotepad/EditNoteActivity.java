@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,7 +60,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
 
 
-        noteEditText = (EditText) findViewById(R.id.input_note);
+        noteEditText = findViewById(R.id.input_note);
         dao = NoteDB.getInstance(this).notesDao();
 
         if (getIntent().getExtras() != null) {
@@ -84,10 +85,7 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.edit_note_save) {
-            onSaveNote();
-        }
-        else if (id == R.id.edit_save_internal){
+        if (id == R.id.edit_save_internal){
             String text = noteEditText.getText().toString().trim();
 
             if (!text.equals("")){
@@ -139,5 +137,15 @@ public class EditNoteActivity extends AppCompatActivity {
             Toast.makeText(this, "Error saving", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            onSaveNote();
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

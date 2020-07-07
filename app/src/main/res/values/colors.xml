@@ -4,7 +4,7 @@
 <resources>
     <color name="colorPrimary">#ff941a</color>
     <color name="colorPrimaryDark">#f57c00</color>
-    <color name="colorAccent">#0047AB</color>
+    <color name="colorAccent">#244370</color>
     <color name="textColor">#000000</color>
     <color name="cardBackground">#f0f4c3</color>
 </resources>

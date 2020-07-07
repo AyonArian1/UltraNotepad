@@ -9,37 +9,8 @@
         <item name="actionMenuTextColor">#ffffff</item>
         <item name="android:textColorPrimary">@android:color/white</item>
 
-        <!--<item name="backgroundColor">#ffffff</item>
-        <item name="cardBackground">#f0f4c3</item>
-        <item name="textColor">#000000</item>
-        <item name="tintColor">#607d8b</item>
-        <item name="buttonColor">#0047AB</item>-->
+
     </style>
 
-    <!--<style name="AppTheme.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-    <style name="darkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        &lt;!&ndash; Customize your theme here. &ndash;&gt;
-        <item name="colorPrimary">@color/darkColorPrimary</item>
-        <item name="colorPrimaryDark">@color/darkColorPrimaryDark</item>
-        <item name="colorAccent">#0047AB</item>
-        <item name="actionModeBackground">@color/darkColorPrimary</item>
-        <item name="actionMenuTextColor">#ffffff</item>
-
-        <item name="backgroundColor">#303030</item>
-        <item name="cardBackground">#424242</item>
-        <item name="textColor">#ffffff</item>
-        <item name="tintColor">#ffffff</item>
-        <item name="buttonColor">#0047AB</item>
-    </style>-->
 
 </resources>

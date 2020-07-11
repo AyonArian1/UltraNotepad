@@ -37,7 +37,7 @@ import java.util.Random;
 
 public class EditNoteActivity extends AppCompatActivity {
 
-    private EditText noteEditText;
+    private EditText noteEditTextTitle, noteEditText;
     private NotesDao dao;
     private Note temp;
     public static final String NOTE_EXTRA_KEY = "note_id";
@@ -47,12 +47,11 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        sharedPreferences = getSharedPreferences("night",0);
-        Boolean booleanValue = sharedPreferences.getBoolean("night_mode",true);
-        if (booleanValue){
+        sharedPreferences = getSharedPreferences("night", 0);
+        Boolean booleanValue = sharedPreferences.getBoolean("night_mode", true);
+        if (booleanValue) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
@@ -61,14 +60,16 @@ public class EditNoteActivity extends AppCompatActivity {
         setTitle("Edit Note");
 
 
-
+        noteEditTextTitle = findViewById(R.id.input_note_title);
         noteEditText = findViewById(R.id.input_note);
         dao = NoteDB.getInstance(this).notesDao();
 
         if (getIntent().getExtras() != null) {
             int id = getIntent().getExtras().getInt(NOTE_EXTRA_KEY, 0);
             temp = dao.getNoteById(id);
+            noteEditTextTitle.setText(temp.getNoteTextTitle());
             noteEditText.setText(temp.getNoteText());
+
         }
     }
 
@@ -87,16 +88,14 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id== R.id.save_note){
+        if (id == R.id.save_note) {
             onSaveNote();
-        }
-        else if (id == R.id.edit_save_internal){
-            String text = noteEditText.getText().toString().trim();
+        } else if (id == R.id.edit_save_internal) {
+            String text = noteEditTextTitle.getText().toString().trim();
 
-            if (!text.equals("")){
-                saveAsTextFile(text,text);
-            }
-            else {
+            if (!text.equals("")) {
+                saveAsTextFile(text, text);
+            } else {
                 Toast.makeText(this, "Write something to save", Toast.LENGTH_SHORT).show();
             }
         }
@@ -105,22 +104,21 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     private void onSaveNote() {
+        String titleText = noteEditTextTitle.getText().toString().trim();
         String text = noteEditText.getText().toString().trim();
-
-        if (!text.isEmpty()) {
+        if (!titleText.isEmpty() || !text.isEmpty()) {
             long date = new Date().getTime();
             if (temp == null) {
-                temp = new Note(text, date);
+                temp = new Note(titleText, text, date);
                 dao.insertNote(temp);
             } else {
+                temp.setNoteTextTitle(titleText);
                 temp.setNoteText(text);
                 temp.setNoteDate(date);
                 dao.updateNote(temp);
             }
-            onBackPressed();
-        } else {
-            onBackPressed();
         }
+        onBackPressed();
     }
 
     private void saveAsTextFile(String filename, String content) {
@@ -144,12 +142,11 @@ public class EditNoteActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
-            startActivity(new Intent(EditNoteActivity.this,MainActivity.class));
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(EditNoteActivity.this, MainActivity.class));
             finish();
         }
         return super.onKeyDown(keyCode, event);

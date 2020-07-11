@@ -8,11 +8,11 @@ import androidx.room.RoomDatabase;
 
 import com.example.ultranotepad.Model.Note;
 
-@Database(entities = Note.class, version = 1)
+@Database(entities = Note.class, version = 2)
 public abstract class NoteDB extends RoomDatabase {
     public abstract NotesDao notesDao();
 
-    public static final String DATABASE_NAME = "noteDb";
+    public static final String DATABASE_NAME = "noteDb2";
     private static NoteDB instance;
 
     // creating a room database

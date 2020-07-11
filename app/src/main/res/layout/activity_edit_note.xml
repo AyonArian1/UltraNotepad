@@ -9,16 +9,33 @@
     >
 
     <EditText
+        android:id="@+id/input_note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:fontFamily="@font/roboto"
+        android:gravity="top"
+        android:hint="Title"
+        android:inputType="text"
+        android:padding="4dp"
+        android:textColor="@color/textColor"
+        android:textSize="20sp" />
+
+    <EditText
         android:id="@+id/input_note"
-        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top"
+        android:layout_below="@+id/input_note_title"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/edittext_bg"
         android:ems="10"
-        android:background="@color/cardBackground"
-        android:textColor="@color/textColor"
-        android:inputType="textMultiLine"
+        android:focusable="true"
+        android:fontFamily="@font/roboto"
         android:gravity="top"
+        android:hint="Note"
+        android:inputType="textMultiLine"
         android:padding="4dp"
-        />
+        android:textColor="@color/textColor" />
 </RelativeLayout>

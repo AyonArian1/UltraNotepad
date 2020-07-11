@@ -49,6 +49,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
     public void onBindViewHolder(@NonNull NotesHolder holder, int position) {
         final Note note = getNotes(position);
         if (note != null) {
+            holder.noteTextTitle.setText(note.getNoteTextTitle());
             holder.noteText.setText(note.getNoteText());
             holder.noteDate.setText(dateFromLong(note.getNoteDate()));
 
@@ -87,7 +88,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
     //ViewHolder for recycler view
     public class NotesHolder extends RecyclerView.ViewHolder {
 
-        TextView noteText, noteDate;
+        TextView noteTextTitle,noteText, noteDate;
         CheckBox checkBox;
         CardView cardView;
 
@@ -95,6 +96,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NotesHolder> {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.cardview_id);
+            noteTextTitle = (TextView)itemView.findViewById(R.id.note_text_title);
             noteText = (TextView) itemView.findViewById(R.id.note_text);
             noteDate = (TextView) itemView.findViewById(R.id.note_date);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);

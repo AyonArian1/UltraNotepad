@@ -11,6 +11,9 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "title")
+    private String noteTextTitle;
+
     @ColumnInfo(name = "text")
     private String noteText;
 
@@ -23,9 +26,18 @@ public class Note {
     public Note() {
     }
 
-    public Note(String noteText, long noteDate) {
+    public Note(String noteTextTitle, String noteText, long noteDate) {
+        this.noteTextTitle = noteTextTitle;
         this.noteText = noteText;
         this.noteDate = noteDate;
+    }
+
+    public String getNoteTextTitle() {
+        return noteTextTitle;
+    }
+
+    public void setNoteTextTitle(String noteTextTitle) {
+        this.noteTextTitle = noteTextTitle;
     }
 
     public String getNoteText() {

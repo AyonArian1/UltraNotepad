@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class EditNoteActivity extends AppCompatActivity {
     private Note temp;
     public static final String NOTE_EXTRA_KEY = "note_id";
     SharedPreferences sharedPreferences = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,10 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.edit_save_internal){
+        if(id== R.id.save_note){
+            onSaveNote();
+        }
+        else if (id == R.id.edit_save_internal){
             String text = noteEditText.getText().toString().trim();
 
             if (!text.equals("")){
@@ -95,6 +100,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 Toast.makeText(this, "Write something to save", Toast.LENGTH_SHORT).show();
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -143,7 +149,7 @@ public class EditNoteActivity extends AppCompatActivity {
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            onSaveNote();
+            startActivity(new Intent(EditNoteActivity.this,MainActivity.class));
             finish();
         }
         return super.onKeyDown(keyCode, event);

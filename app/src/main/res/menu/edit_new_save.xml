@@ -4,6 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/save_note"
+        android:title="Save"
+        android:icon="@drawable/ic_action_save"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/edit_save_internal"
         android:title="Export to file"
         />

@@ -51,8 +51,10 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
     private int checkCount = 0;
     private FloatingActionButton fab;
     private static final int NUM_COLOUMN = 2;
-
     SharedPreferences sharedPreferences = null;
+    private long backPressedTime;
+    private Toast backToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -148,7 +150,17 @@ public class MainActivity extends AppCompatActivity implements NoteEventListener
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()){
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        }
+        else {
+            backToast = Toast.makeText(getBaseContext(),"Press back again to exit",Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 
     //On long click to select Multiple notes and delete notes
